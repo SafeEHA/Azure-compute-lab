@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>BrightWave Music - Stream Your Vibe</title>
+       <style>
+           * { margin: 0; padding: 0; box-sizing: border-box; }
+           body {
+               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+               background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+               min-height: 100vh;
+               padding: 20px;
+           }
+           .container {
+               max-width: 1200px;
+               margin: 0 auto;
+           }
+           .header {
+               background: white;
+               padding: 40px;
+               border-radius: 15px;
+               box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+               text-align: center;
+               margin-bottom: 30px;
+           }
+           .header h1 {
+               color: #667eea;
+               font-size: 48px;
+               margin-bottom: 10px;
+           }
+           .header p {
+               color: #666;
+               font-size: 18px;
+           }
+           .content {
+               display: grid;
+               grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+               gap: 20px;
+               margin-bottom: 30px;
+           }
+           .card {
+               background: white;
+               padding: 30px;
+               border-radius: 10px;
+               box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+           }
+           .card h2 {
+               color: #667eea;
+               margin-bottom: 15px;
+               font-size: 24px;
+           }
+           .card p {
+               color: #666;
+               line-height: 1.6;
+           }
+           .playlist-item {
+               background: #f8f9fa;
+               padding: 15px;
+               margin: 10px 0;
+               border-radius: 8px;
+               border-left: 4px solid #667eea;
+           }
+           .security-panel {
+               background: white;
+               padding: 30px;
+               border-radius: 10px;
+               box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+           }
+           .security-panel h2 {
+               color: #667eea;
+               margin-bottom: 20px;
+               display: flex;
+               align-items: center;
+               gap: 10px;
+           }
+           .status-indicator {
+               display: inline-block;
+               width: 12px;
+               height: 12px;
+               border-radius: 50%;
+               margin-right: 8px;
+           }
+           .status-success { background: #28a745; }
+           .status-warning { background: #ffc107; }
+           .status-error { background: #dc3545; }
+           .secret-display {
+               background: #f8f9fa;
+               padding: 20px;
+               border-radius: 8px;
+               margin-top: 15px;
+               font-family: 'Courier New', monospace;
+               word-break: break-all;
+               border: 2px solid #e9ecef;
+           }
+           button {
+               background: #667eea;
+               color: white;
+               border: none;
+               padding: 12px 30px;
+               border-radius: 5px;
+               font-size: 16px;
+               cursor: pointer;
+               margin-top: 15px;
+               transition: background 0.3s;
+           }
+           button:hover {
+               background: #5568d3;
+           }
+           .info-box {
+               background: #e7f3ff;
+               border-left: 4px solid #2196F3;
+               padding: 15px;
+               margin: 15px 0;
+               border-radius: 4px;
+           }
+       </style>
+   </head>
+   <body>
+       <div class="container">
+           <div class="header">
+               <h1>🎵 BrightWave Music</h1>
+               <p>Stream Your Vibe - Curated Playlists for Every Mood</p>
+           </div>
+
+           <div class="content">
+               <div class="card">
+                   <h2>Featured Playlists</h2>
+                   <div class="playlist-item">
+                       <strong>Morning Energy</strong><br>
+                       Upbeat tracks to start your day
+                   </div>
+                   <div class="playlist-item">
+                       <strong>Focus Flow</strong><br>
+                       Ambient sounds for deep work
+                   </div>
+                   <div class="playlist-item">
+                       <strong>Evening Chill</strong><br>
+                       Relaxing vibes to unwind
+                   </div>
+               </div>
+
+               <div class="card">
+                   <h2>Why BrightWave?</h2>
+                   <p>✨ AI-curated playlists tailored to your taste</p>
+                   <p>🎧 High-quality streaming</p>
+                   <p>📱 Available on all devices</p>
+                   <p>🔒 Secure, privacy-focused platform</p>
+               </div>
+
+               <div class="card">
+                   <h2>Join Our Community</h2>
+                   <p>Over 100,000 music lovers stream with BrightWave daily. Discover new artists, create custom playlists, and share your musical journey.</p>
+                   <button style="width: 100%; margin-top: 20px;">Start Free Trial</button>
+               </div>
+           </div>
+
+           <div class="security-panel">
+               <h2>🔐 Security Status Dashboard</h2>
+               
+               <div class="info-box">
+                   <strong>About This Demo:</strong><br>
+                   This panel demonstrates how this app securely retrieves its database connection string from Azure Key Vault using Managed Identity. No passwords stored in code!
+               </div>
+
+               <div id="status-message" style="margin: 20px 0; padding: 15px; border-radius: 5px;">
+                   <span class="status-indicator status-warning"></span>
+                   <strong>Status:</strong> Ready to test Key Vault connection
+               </div>
+
+               <button onclick="testConnection()">Test Key Vault Connection</button>
+
+               <div id="secret-container" style="display: none;">
+                   <h3 style="margin-top: 20px; color: #333;">Retrieved Secret:</h3>
+                   <div class="secret-display" id="secret-value"></div>
+                   <p style="margin-top: 10px; color: #666; font-size: 14px;">
+                       <strong>Retrieved at:</strong> <span id="retrieved-time"></span>
+                   </p>
+               </div>
+           </div>
+       </div>
+
+       <script>
+           async function testConnection() {
+               const statusMsg = document.getElementById('status-message');
+               const secretContainer = document.getElementById('secret-container');
+               
+               statusMsg.innerHTML = '<span class="status-indicator status-warning"></span><strong>Status:</strong> Connecting to Key Vault...';
+               
+               try {
+                   const response = await fetch('/api/status');
+                   const data = await response.json();
+                   
+                   if (data.status === 'success') {
+                       statusMsg.innerHTML = '<span class="status-indicator status-success"></span><strong>Status:</strong> ' + data.message;
+                       secretContainer.style.display = 'block';
+                       document.getElementById('secret-value').textContent = data.secretValue;
+                       document.getElementById('retrieved-time').textContent = new Date(data.retrievedAt).toLocaleString();
+                   } else if (data.status === 'warning') {
+                       statusMsg.innerHTML = '<span class="status-indicator status-warning"></span><strong>Status:</strong> ' + data.message;
+                       statusMsg.style.background = '#fff3cd';
+                       secretContainer.style.display = 'none';
+                   } else {
+                       statusMsg.innerHTML = '<span class="status-indicator status-error"></span><strong>Error:</strong> ' + data.message;
+                       statusMsg.style.background = '#f8d7da';
+                       secretContainer.style.display = 'none';
+                   }
+               } catch (error) {
+                   statusMsg.innerHTML = '<span class="status-indicator status-error"></span><strong>Error:</strong> Failed to connect to server';
+                   statusMsg.style.background = '#f8d7da';
+               }
+           }
+       </script>
+   </body>
+   </html>
